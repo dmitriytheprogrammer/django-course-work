@@ -1,0 +1,26 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<h1>Домашняя страница</h1>
+
+<h2>UML Models</h2>
+<p>An UML diagram of the site's Django model structure is shown below. </p>
+
+<div>
+{% load static %}
+<img src="{% static 'images/management_model_uml.png' %}" alt="My image" width="600px">
+</div>  
+
+
+<h2>Динамический контент</h2>
+
+<p>В библиотеке имеются следующие счетчики записей:</p>
+<ul>
+<li><strong>Продукты:</strong> {{ num_products }}</li>
+<li><strong>Категории:</strong> {{ num_categories }}</li>
+</ul>
+
+
+<p>Вы посетили этк страницу {{ num_visits }} раз.</p>
+
+{% endblock %}
