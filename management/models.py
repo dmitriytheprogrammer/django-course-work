@@ -10,7 +10,7 @@ class Product(models.Model):
     summary = models.CharField(max_length=1000, help_text="Введите краткое описание товара")
     price = models.DecimalField(max_digits=10, decimal_places=2, help_text="Введите цену товара")
     quantity = models.PositiveIntegerField(help_text="Введите количество товара")
-    warehouse = models.ForeignKey("Warehouse", on_delete=models.CASCADE, help_text="Идентификатор склада", blank=True, null=True)
+    warehouse = models.ForeignKey("Warehouse", related_name='products', on_delete=models.CASCADE, help_text="Идентификатор склада", blank=True, null=True)
     time_added = models.DateTimeField(auto_now_add=True)
     update_time = models.DateTimeField(auto_now=True)
 
