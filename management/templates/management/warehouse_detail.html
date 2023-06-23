@@ -1,7 +1,15 @@
 {% extends "base_generic.html" %}
+
 {% block content %}
-<h1>Склад: {{ warehouse.title }}</h1>
-<p><strong>Название склада:</strong> {{ warehouse.name }}</p>
-<p><strong>Адрес склада:</strong> {{ warehouse.address }}</p>
-<p><strong>Товары:</strong> <a href="{{ warehouse.get_absolute_url }}">{{ warehouse.products }}</a></p> 
+    <h1>Склад: {{ warehouse.title }}</h1>
+    <p><strong>Название склада:</strong> {{ warehouse.name }}</p>
+    <p><strong>Адрес склада:</strong> {{ warehouse.address }}</p>
+    <p><strong>Товары:</strong></p>
+    <ul>
+        {% for product in warehouse.products.all %}
+            <li><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></li>
+        {% empty %}
+            <li>Нет товаров на складе</li>
+        {% endfor %}
+    </ul>
 {% endblock %}
