@@ -45,7 +45,7 @@ class Category_Product(models.Model):
     product = models.ForeignKey("Product", on_delete=models.CASCADE)
 
     def __str__(self):
-       return f"Category_Product #{self.id}"
+        return f"{self.category} - {self.product}"
     
     class Meta:
         verbose_name = 'Category_Product',
