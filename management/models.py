@@ -34,6 +34,10 @@ class Category(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return '{0}'.format(self.name)
+    
+    class Meta:
+        verbose_name = 'Category',
+        verbose_name_plural = 'Categories'
 
 
 class Category_Product(models.Model):
@@ -42,10 +46,13 @@ class Category_Product(models.Model):
 
     def __str__(self):
        return f"Category_Product #{self.id}"
+    
+    class Meta:
+        verbose_name = 'Category_Product',
+        verbose_name_plural = 'Categories_Products'
 
 
 class Warehouse(models.Model):
-    products = models.ManyToManyField("Product", related_name='warehouses', blank=True)
     name = models.CharField(max_length=200, help_text="Введите название склада")
     address = models.CharField(max_length=200, help_text="Введите адрес склада")
 
@@ -78,7 +85,7 @@ class Order(models.Model):
 
     def __str__(self):
         """String for representing the Model object."""
-        return '{0}'.format(self.name)
+        return '{0}'.format(self.product)
 
 class Delivery(models.Model):
     product = models.ForeignKey("Product", on_delete=models.CASCADE)
@@ -92,7 +99,11 @@ class Delivery(models.Model):
 
     def __str__(self):
         """String for representing the Model object."""
-        return '{0}'.format(self.name)
+        return '{0}'.format(self.product)
+    
+    class Meta:
+        verbose_name = 'Delivery',
+        verbose_name_plural = 'Deliveries'
 
 class Supplier(models.Model):
     name = models.CharField(max_length=200, help_text="Введите наименование организации")

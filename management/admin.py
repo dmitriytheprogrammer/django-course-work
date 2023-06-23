@@ -3,10 +3,13 @@ from .models import Product, Category, Category_Product, Warehouse, Order, Deliv
 
 admin.site.register(Category)
 admin.site.register(Category_Product)
-admin.site.register(Warehouse)
 
 class CategoryInline(admin.TabularInline):
     model = Category_Product
+    extra = 1
+
+class ProductInline(admin.TabularInline):
+    model = Product
     extra = 1
 
 @admin.register(Product)
@@ -27,3 +30,8 @@ class DeliveryAdmin(admin.ModelAdmin):
 @admin.register(Supplier)
 class SupplierAdmin(admin.ModelAdmin):
     list_display = ('name', 'contact', 'address', 'tel')
+
+@admin.register(Warehouse)
+class Warehouse(admin.ModelAdmin):
+     list_display = ('name', 'address')
+     inlines = [ProductInline]

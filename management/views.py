@@ -171,9 +171,3 @@ class SupplierDeleteView(DeleteView):
     model = Supplier
     success_url = reverse_lazy('suppliers')
     permission_required = 'management.can_mark_returned'
-
-class ManagerListView(ListView):
-    model = Warehouse
-    model = Order
-    model = Delivery
-    model = Supplier
