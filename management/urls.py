@@ -10,7 +10,6 @@ urlpatterns = [
     path('deliveries/', DeliveryListView.as_view(), name='delivery-list'),
     path('suppliers/', SupplierListView.as_view(), name='supplier-list'),
 
-
     path('warehouse/', views.WarehouseListView.as_view(), name='warehouse-list'),
     path('warehouse/<int:pk>/', views.WarehouseDetailView.as_view(), name='warehouse-detail'),
     path('order/', views.OrderListView.as_view(), name='order-list'),
