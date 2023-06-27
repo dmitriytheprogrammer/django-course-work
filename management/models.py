@@ -1,8 +1,6 @@
 from django.db import models
 from django.urls import reverse
-from datetime import date
 from django.contrib.auth.models import User
-import uuid
 
 
 class Product(models.Model):
@@ -10,17 +8,13 @@ class Product(models.Model):
     summary = models.CharField(max_length=1000, help_text="Введите краткое описание товара")
     price = models.DecimalField(max_digits=10, decimal_places=2, help_text="Введите цену товара")
     quantity = models.PositiveIntegerField(help_text="Введите количество товара")
-    warehouse = models.ForeignKey("Warehouse", related_name='products', on_delete=models.CASCADE, help_text="Идентификатор склада", blank=True, null=True)
-    time_added = models.DateTimeField(auto_now_add=True)
-    update_time = models.DateTimeField(auto_now=True)
+    warehouses = models.ManyToManyField("Warehouse", through="ProductWarehouse", related_name='products', help_text="Склады", blank=True)
 
     def get_absolute_url(self):
-        """Returns the url to access a particular product instance."""
         return reverse('product-detail', args=[str(self.id)])
 
     def __str__(self):
-        """String for representing the Model object."""
-        return '{0}'.format(self.name)
+        return self.name
 
 
 class Category(models.Model):
@@ -28,15 +22,13 @@ class Category(models.Model):
     summary = models.TextField(max_length=1000, help_text="Введите краткое описание категории")
 
     def get_absolute_url(self):
-        """Returns the url to access a particular category instance."""
         return reverse('category-detail', args=[str(self.id)])
 
     def __str__(self):
-        """String for representing the Model object."""
-        return '{0}'.format(self.name)
+        return self.name
     
     class Meta:
-        verbose_name = 'Category',
+        verbose_name = 'Category'
         verbose_name_plural = 'Categories'
 
 
@@ -48,7 +40,7 @@ class Category_Product(models.Model):
         return f"{self.category} - {self.product}"
     
     class Meta:
-        verbose_name = 'Category_Product',
+        verbose_name = 'Category_Product'
         verbose_name_plural = 'Categories_Products'
 
 
@@ -57,12 +49,23 @@ class Warehouse(models.Model):
     address = models.CharField(max_length=200, help_text="Введите адрес склада")
 
     def get_absolute_url(self):
-        """Returns the url to access a particular product instance."""
         return reverse('warehouse-detail', args=[str(self.id)])
 
     def __str__(self):
-        """String for representing the Model object."""
-        return '{0}'.format(self.name)
+        return self.name
+
+
+class ProductWarehouse(models.Model):
+    product = models.ForeignKey("Product", on_delete=models.CASCADE)
+    warehouse = models.ForeignKey("Warehouse", on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(help_text="Введите количество товара на складе")
+
+    def __str__(self):
+        return f"{self.product} - {self.warehouse}"
+    
+    class Meta:
+        verbose_name = 'ProductWarehouse'
+        verbose_name_plural = 'ProductWarehouses'
 
 
 class Order(models.Model):
@@ -80,12 +83,11 @@ class Order(models.Model):
     status = models.CharField(max_length=100, choices=STATUS_CHOICES)
 
     def get_absolute_url(self):
-        """Returns the url to access a particular product instance."""
         return reverse('order-detail', args=[str(self.id)])
 
     def __str__(self):
-        """String for representing the Model object."""
-        return '{0}'.format(self.product)
+        return str(self.product)
+
 
 class Delivery(models.Model):
     product = models.ForeignKey("Product", on_delete=models.CASCADE)
@@ -94,16 +96,16 @@ class Delivery(models.Model):
     date = models.DateField(help_text="Выберите дату поставки")
 
     def get_absolute_url(self):
-        """Returns the url to access a particular product instance."""
+        """Returns the url to access a particular delivery instance."""
         return reverse('delivery-detail', args=[str(self.id)])
 
     def __str__(self):
-        """String for representing the Model object."""
-        return '{0}'.format(self.product)
+        return str(self.product)
     
     class Meta:
-        verbose_name = 'Delivery',
+        verbose_name = 'Delivery'
         verbose_name_plural = 'Deliveries'
+
 
 class Supplier(models.Model):
     name = models.CharField(max_length=200, help_text="Введите наименование организации")
@@ -111,15 +113,8 @@ class Supplier(models.Model):
     address = models.CharField(max_length=200, help_text="Введите адрес поставщика")
     tel = models.CharField(max_length=20, help_text="Введите номер телефона")
 
-
     def get_absolute_url(self):
-        """Returns the url to access a particular product instance."""
         return reverse('supplier-detail', args=[str(self.id)])
 
     def __str__(self):
-        """String for representing the Model object."""
-        return '{0}'.format(self.name)
-
-
-
-
+        return self.name
