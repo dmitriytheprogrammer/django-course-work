@@ -12,16 +12,27 @@ import datetime
 def index(request):
     num_products = Product.objects.all().count()
     num_categories = Category.objects.all().count()
+    num_suppliers = Supplier.objects.all().count()
+    num_orders = Order.objects.all().count()
+    num_deliveries = Delivery.objects.all().count()
+    num_warehouses = Warehouse.objects.all().count()
     num_visits = request.session.get('num_visits', 1)
-    request.session['num_visits'] = num_visits+1
+    request.session['num_visits'] = num_visits + 1
 
     return render(
         request,
         'index.html',
-        context={'num_products': num_products, 
-                 'num_categories': num_categories,
-                 'num_visits': num_visits},
+        context={
+            'num_products': num_products,
+            'num_categories': num_categories,
+            'num_suppliers': num_suppliers,
+            'num_orders': num_orders,
+            'num_deliveries': num_deliveries,
+            'num_warehouses': num_warehouses,
+            'num_visits': num_visits,
+        },
     )
+
 
 # PRODUCT
 class ProductListView(ListView):

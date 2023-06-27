@@ -3,20 +3,6 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 
 
-class Product(models.Model):
-    name = models.CharField(max_length=200, help_text="Введите название товара")
-    summary = models.CharField(max_length=1000, help_text="Введите краткое описание товара")
-    price = models.DecimalField(max_digits=10, decimal_places=2, help_text="Введите цену товара")
-    quantity = models.PositiveIntegerField(help_text="Введите количество товара")
-    warehouses = models.ManyToManyField("Warehouse", through="ProductWarehouse", related_name='products', help_text="Склады", blank=True)
-
-    def get_absolute_url(self):
-        return reverse('product-detail', args=[str(self.id)])
-
-    def __str__(self):
-        return self.name
-
-
 class Category(models.Model):
     name = models.CharField(max_length=200, help_text="Введите название категории товара")
     summary = models.TextField(max_length=1000, help_text="Введите краткое описание категории")
@@ -33,7 +19,7 @@ class Category(models.Model):
 
 
 class Category_Product(models.Model):
-    category = models.ForeignKey("Category", on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     product = models.ForeignKey("Product", on_delete=models.CASCADE)
 
     def __str__(self):
@@ -57,8 +43,8 @@ class Warehouse(models.Model):
 
 class ProductWarehouse(models.Model):
     product = models.ForeignKey("Product", on_delete=models.CASCADE)
-    warehouse = models.ForeignKey("Warehouse", on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(help_text="Введите количество товара на складе")
+    warehouse = models.ForeignKey(Warehouse, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(help_text="Введите количество товара на складе", default=0)
 
     def __str__(self):
         return f"{self.product} - {self.warehouse}"
@@ -68,8 +54,33 @@ class ProductWarehouse(models.Model):
         verbose_name_plural = 'ProductWarehouses'
 
 
+class Product(models.Model):
+    name = models.CharField(max_length=200, help_text="Введите название товара")
+    summary = models.CharField(max_length=1000, help_text="Введите краткое описание товара")
+    price = models.DecimalField(max_digits=10, decimal_places=2, help_text="Введите цену товара")
+    quantity = models.PositiveIntegerField(help_text="Введите количество товара")
+    warehouses = models.ManyToManyField(Warehouse, through=ProductWarehouse, related_name='products', help_text="Склады", blank=True)
+    categories = models.ManyToManyField(Category, through=Category_Product, related_name='products', help_text="Категории", blank=True)
+
+    def get_absolute_url(self):
+        return reverse('product-detail', args=[str(self.id)])
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        warehouses = self.warehouses.all()
+        for warehouse in warehouses:
+            ProductWarehouse.objects.update_or_create(
+                product=self,
+                warehouse=warehouse,
+                defaults={'quantity': self.quantity}
+            )
+
+
 class Order(models.Model):
-    product = models.ForeignKey("Product", on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(help_text="Введите количество товара")
     date = models.DateField(auto_now_add=True, help_text="Время создания заказа")
@@ -90,13 +101,12 @@ class Order(models.Model):
 
 
 class Delivery(models.Model):
-    product = models.ForeignKey("Product", on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
     supplier = models.ForeignKey("Supplier", on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(help_text="Введите количество поставляемого товара")
     date = models.DateField(help_text="Выберите дату поставки")
 
     def get_absolute_url(self):
-        """Returns the url to access a particular delivery instance."""
         return reverse('delivery-detail', args=[str(self.id)])
 
     def __str__(self):
