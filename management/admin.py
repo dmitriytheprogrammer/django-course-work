@@ -1,9 +1,6 @@
 from django import forms
 from django.contrib import admin
-<<<<<<< HEAD
 from django.contrib.admin import widgets
-=======
->>>>>>> e3268984cac6fbb25f1ed39ec0a5a314635e2f45
 from .models import Product, Category, Category_Product, Warehouse, Order, Delivery, Supplier, ProductWarehouse
 
 
@@ -31,7 +28,6 @@ class ProductForm(forms.ModelForm):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-<<<<<<< HEAD
     list_display = ('name', 'summary', 'price', 'quantity', 'get_warehouse_names')
     list_filter = ('categories', 'warehouses')
     inlines = [CategoryInline]
@@ -39,11 +35,6 @@ class ProductAdmin(admin.ModelAdmin):
     form = ProductForm
     filter_horizontal = ('warehouses',)
     readonly_fields = ('get_warehouse_names',)
-=======
-    list_display = ('name', 'summary', 'price', 'quantity')
-    form = ProductForm
-    filter_horizontal = ('warehouses',)  # Добавляем горизонтальный фильтр для складов
->>>>>>> e3268984cac6fbb25f1ed39ec0a5a314635e2f45
 
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)
@@ -55,13 +46,10 @@ class ProductAdmin(admin.ModelAdmin):
                     warehouse=warehouse,
                     defaults={'quantity': obj.quantity}
                 )
-<<<<<<< HEAD
 
     def get_warehouse_names(self, obj):
         return ', '.join([str(warehouse) for warehouse in obj.warehouses.all()])
     get_warehouse_names.short_description = 'Warehouses'
-=======
->>>>>>> e3268984cac6fbb25f1ed39ec0a5a314635e2f45
 
 
 @admin.register(Order)

@@ -8,6 +8,7 @@ urlpatterns = [
 
 urlpatterns += [
     path('management/', include('management.urls')),
+    path("__debug__/", include("debug_toolbar.urls")),
 ]
 
 from django.conf import settings
