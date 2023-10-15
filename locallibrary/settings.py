@@ -63,7 +63,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'locallibrary.wsgi.application'
 
 
-# Databas
+# Database
 
 DATABASES = {
     'default': {

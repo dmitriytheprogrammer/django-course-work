@@ -45,17 +45,14 @@ class ProductDetailView(DetailView):
 class ProductCreateView(CreateView):
     model = Product
     fields = ['name', 'summary', 'price', 'quantity', 'warehouse_id']
-    permission_required = 'management.can_mark_returned'
     
 class ProductUpdateView(UpdateView):
     model = Product
     fields = ['name', 'summary', 'price', 'quantity', 'warehouse_id']
-    permission_required = 'management.can_mark_returned'
 
 class ProductDeleteView(DeleteView):
     model = Product
     success_url = reverse_lazy('products')
-    permission_required = 'management.can_mark_returned'
 
 # CATEGORY
 class CategoryListView(ListView):
@@ -68,17 +65,14 @@ class CategoryDetailView(DetailView):
 class CategoryCreateView(CreateView):
     model = Category
     fields = ['name', 'summary']
-    permission_required = 'management.can_mark_returned'
 
 class CategoryUpdateView(UpdateView):
     model = Category
     fields = ['name', 'summary']
-    permission_required = 'management.can_mark_returned'
 
 class CategoryDeleteView(DeleteView):
     model = Category
     success_url = reverse_lazy('categories')
-    permission_required = 'management.can_mark_returned'
 
 # WAREHOUSE
 class WarehouseListView(ListView):
@@ -93,17 +87,14 @@ class WarehouseDetailView(DetailView):
 class WarehouseCreateView(CreateView):
     model = Warehouse
     fields = ['name', 'address']
-    permission_required = 'management.can_mark_returned'
 
 class WarehouseUpdateView(UpdateView):
     model = Warehouse
     fields = ['name', 'address']
-    permission_required = 'management.can_mark_returned'
 
 class WarehouseDeleteView(DeleteView):
     model = Warehouse
     success_url = reverse_lazy('warehouses')
-    permission_required = 'management.can_mark_returned'
 
 # ORDER
 class OrderListView(ListView):
@@ -118,17 +109,14 @@ class OrderDetailView(DetailView):
 class OrderCreateView(CreateView):
     model = Order
     fields = ['product', 'user', 'quantity', 'status']
-    permission_required = 'management.can_mark_returned'
 
 class OrderUpdateView(UpdateView):
     model = Order
     fields = ['product', 'user', 'quantity', 'status']
-    permission_required = 'management.can_mark_returned'
 
 class OrderDeleteView(DeleteView):
     model = Order
     success_url = reverse_lazy('orders')
-    permission_required = 'management.can_mark_returned'
 
 # DELIVERY
 class DeliveryListView(ListView):
@@ -143,17 +131,14 @@ class DeliveryDetailView(DetailView):
 class DeliveryCreateView(CreateView):
     model = Delivery
     fields = ['product', 'supplier', 'quantity', 'date']
-    permission_required = 'management.can_mark_returned'
 
 class DeliveryUpdateView(UpdateView):
     model = Delivery
     fields = ['product', 'supplier', 'quantity', 'date']
-    permission_required = 'management.can_mark_returned'
 
 class DeliveryDeleteView(DeleteView):
     model = Delivery
     success_url = reverse_lazy('deliveries')
-    permission_required = 'management.can_mark_returned'
 
 # SUPPLIER
 class SupplierListView(ListView):
@@ -168,14 +153,11 @@ class SupplierDetailView(DetailView):
 class SupplierCreateView(CreateView):
     model = Supplier
     fields = ['name', 'contact', 'address', 'tel']
-    permission_required = 'management.can_mark_returned'
 
 class SupplierUpdateView(UpdateView):
     model = Supplier
     fields = ['name', 'contact', 'address', 'tel']
-    permission_required = 'management.can_mark_returned'
 
 class SupplierDeleteView(DeleteView):
     model = Supplier
     success_url = reverse_lazy('suppliers')
-    permission_required = 'management.can_mark_returned'

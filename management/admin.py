@@ -49,7 +49,7 @@ class ProductAdmin(admin.ModelAdmin):
 
     def get_warehouse_names(self, obj):
         return ', '.join([str(warehouse) for warehouse in obj.warehouses.all()])
-    get_warehouse_names.short_description = 'Warehouses'
+    get_warehouse_names.short_description = 'Склады'
 
 
 @admin.register(Order)
@@ -77,3 +77,4 @@ class WarehouseAdmin(admin.ModelAdmin):
 @admin.register(ProductWarehouse)
 class ProductWarehouseAdmin(admin.ModelAdmin):
     list_display = ('product', 'warehouse', 'quantity')
+    list_filter = ('warehouse',)
